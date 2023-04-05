@@ -18,13 +18,13 @@
     <body class="">
 <div class="container">
 
-    <table class="table table-sm table-bordered table-black mt-5" style="width: 800px">
+    <table class="table table-bordered table-black mt-5 mx-auto" style="width: 400px">
   <tbody>
-    @for($row = 0; $row < 20; $row++)
+    @for($row = 0; $row < 15; $row++)
       <tr>
-        @for($col = 0; $col < 15; $col++)
-          <td style="width: 20px; background:green;">ą</td>
-          @if(($col + 1) % 15 == 0)
+        @for($col = 0; $col < 40; $col++)
+          <td style="width: 10px; height:10px; background:green;">ą</td>
+          @if(($col + 1) % 40 == 0)
             </tr><tr>
           @endif
         @endfor
