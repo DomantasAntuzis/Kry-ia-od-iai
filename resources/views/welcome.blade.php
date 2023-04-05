@@ -16,6 +16,24 @@
         @vite('resources/js/app.jsx')
     </head>
     <body class="">
+<div class="container">
+
+    <table class="table table-sm table-bordered table-black mt-5" style="width: 800px">
+  <tbody>
+    @for($row = 0; $row < 20; $row++)
+      <tr>
+        @for($col = 0; $col < 15; $col++)
+          <td style="width: 20px; background:green;">ą</td>
+          @if(($col + 1) % 15 == 0)
+            </tr><tr>
+          @endif
+        @endfor
+      </tr>
+    @endfor
+  </tbody>
+</table>
+</div>
+
     <div id="app"></div>
     </body>
 </html>
