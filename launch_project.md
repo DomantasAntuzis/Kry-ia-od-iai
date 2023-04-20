@@ -1,5 +1,40 @@
-1 composer update (atsiuncia visus naujus komponentus)
-2 npm i (viena kart tereikia instaliuot)
-3 npm run dev (paleidziamas vite su reikiamais pluginais (react,bootstrap,laravel))
-4 php artisan serve (startuojamas serveris)
-js/react scriptai randasi resources/js/
+Parsisiuntus projektą, būtina pasidaryti .env.example kopiją,
+ir ją pervadinti į .env (taip suaktyvinamas laravel config failiukas).
+**Šis žingsnis atliekamas tik vieną kart kai projektas yra šviežiai parsisiūstas.**
+
+.env faile prijungti mongodb duomenų bazę vietoj mysql:
+"
+DB_CONNECTION=mongodb
+DB_MONGO_PORT=27017
+DB_MONGO_DATABASE=<nurodomas duomenų bazės pavadinimas>
+DB_MONGO_DSN=mongodb://localhost:27017/
+"
+database.php faile prie connections prirašyti :
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('DB_MONGO_DSN'),
+            'database' => env('DB_MONGO_DATABASE'),
+        ],
+'database.php' failas randasi config kataloge po bootstrap
+
+Kad mongodb veiktų, reikia turėti mongodb.dll papildinį.
+Jį galima parsisiūsti iš https://github.com/mongodb/mongo-php-driver/releases/tag/1.15.0
+Šiame projekte naudojama **8.1** php versija.
+Parsisiuntus zip failą, iš jo iškelti php_mongodb.dll į **C:\xampp\php\ext** folderį
+Po to suaktyvinti šį .dll failą **php.ini** tekstiniame faile įrašant **extension=php_mongodb.dll**
+Eilutė įrašoma prie .dll papildinių (extensions) skilties
+
+Kad atnaujinti ar atsisiūsti esamus komponentus naudojame **composer update**
+
+Įrašome npm package komponentą į projektą su komanda **npm install**
+
+Paleidžiame kompiliatorių su **npm run dev**
+
+Sukuriame duomenų bazių lenteles paleidžiant migraciją: **php artisan migrate**
+
+Paruoštas projektas paleidžiamas lokaliam serveryje naudojant **php artisan serve**
+
+
+
+
+
