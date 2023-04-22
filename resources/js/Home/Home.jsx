@@ -15,7 +15,7 @@ export default function Home() {
         setShowLogin(!showLogin);
         setShowRegister(false);
       };
-
+      
     return (
     <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">

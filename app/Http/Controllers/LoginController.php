@@ -7,23 +7,29 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('web');
+    }
+
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'name' => ['required'],
             'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
+            $value = $request->session()->get('key');
 
             return response()->json($user);
         }
 
         return response()->json([
             'errors' => [
-                'email' => 'The provided credentials do not match our records.',
+                'name' => 'The provided credentials do not match our records.',
             ]
         ], 422);
     }
