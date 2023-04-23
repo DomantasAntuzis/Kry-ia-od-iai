@@ -26,6 +26,9 @@ Eilutė įrašoma prie .dll papildinių (extensions) skilties
 
 Kad atnaujinti ar atsisiūsti esamus komponentus naudojame **composer update**
 
+**Sanctum api naudojimas**
+PersonalAccessToken.php faile vietoj default Eloquent reikia naudoti mongodb modelį.
+
 Įrašome npm package komponentą į projektą su komanda **npm install**
 
 Paleidžiame kompiliatorių su **npm run dev**
