@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Registration from "../Forms/registration";
 import Login from "../Forms/login";
 
-export default function Home() {
+export default function Home({ loginSuccess }) {
     const [showRegister, setShowRegister] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
 
@@ -15,7 +15,7 @@ export default function Home() {
         setShowLogin(!showLogin);
         setShowRegister(false);
       };
-      
+
     return (
     <>
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -24,6 +24,7 @@ export default function Home() {
                 Navbar
                 </a>
                 <div className="d-flex">
+                    <button className="btn btn-outline-success" >Log Out</button>
                     <button className="btn btn-outline-success" onClick={displayLoginForm}>Login</button>
                     <button className="btn btn-outline-success" onClick={displayRegisterForm}>
                         Register

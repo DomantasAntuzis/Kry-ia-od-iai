@@ -31,7 +31,11 @@ class CrosswordController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'words' => 'required|',
+            'difficulty' => 'required|string'
+        ]);
     }
 
     /**

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Registration from "@/Forms/registration";
+import Home from "@/Home/Home";
 
 export default function Login() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -7,6 +8,7 @@ export default function Login() {
         email: "",
         password: "",
     });
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -30,11 +32,15 @@ export default function Login() {
         })
             .then((response) => {
                 if (response.ok) {
+                    // Set login success state to true
+                    setLoginSuccess(true);
+
                     // Registration success, clear form data
                     setFormData({
                         name: "",
                         password: "",
                     });
+
                     console.log("Login success!");
                 } else {
                     // Registration failed, handle error
@@ -45,6 +51,23 @@ export default function Login() {
                 console.error("Login failed.", error);
             });
     };
+
+    // Access login success state
+    if (loginSuccess) {
+        console.log(loginSuccess);
+    }
+
+
+    // const LogOut = () =>{
+    //     fetch("api/logout", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Accept: "application/json",
+    //             "X-CSRF-TOKEN": csrfToken,
+    //         },
+    //     })
+    // }
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
@@ -53,6 +76,7 @@ export default function Login() {
                        onChange={handleChange}/>
                 <button type="submit">Submit</button>
             </form>
+    <Home loginSuccess={loginSuccess} />
         </div>
-    )
+    );
 }
