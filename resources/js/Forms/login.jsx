@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+import Registration from "@/Forms/registration";
 
 export default function Login() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const [formData, setFormData] = useState({
-        name: "",
+        email: "",
         password: "",
     });
 
@@ -47,10 +48,11 @@ export default function Login() {
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Name" name="name" value={formData.name} onChange={handleChange}/>
-                <input type="password" placeholder="Password" name="password" value={formData.password} onChange={handleChange}/>
+                <input type="email" placeholder="Email" name="email" value={formData.email} onChange={handleChange}/>
+                <input type="password" placeholder="Password" name="password" value={formData.password}
+                       onChange={handleChange}/>
                 <button type="submit">Submit</button>
             </form>
         </div>
     )
-    }
+}
