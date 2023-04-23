@@ -57,6 +57,7 @@ class LoginController extends Controller
     public function disconnect(Request $request)
     {
         Auth::guard('web')->logout();
+        Auth::user()->tokens()->delete();
         return [
             'message' => 'user logged out'
         ];
