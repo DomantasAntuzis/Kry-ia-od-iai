@@ -1,12 +1,10 @@
 import React, {useState} from "react";
-import Registration from "@/Forms/registration";
-import Home from "@/Home/Home";
 
 export default function Login() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
+        email: null,
+        password: null,
     });
     const [loginSuccess, setLoginSuccess] = useState(false);
 
@@ -19,7 +17,6 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         console.log(csrfToken)
         fetch("api/login", {
             method: "POST",
@@ -71,12 +68,11 @@ export default function Login() {
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
-                <input type="email" placeholder="Email" name="email" value={formData.email} onChange={handleChange}/>
-                <input type="password" placeholder="Password" name="password" value={formData.password}
+                <input type="email" placeholder="Email" name="email" value={formData.email || ''} onChange={handleChange}/>
+                <input type="password" placeholder="Password" name="password" value={formData.password || ''}
                        onChange={handleChange}/>
                 <button type="submit">Submit</button>
             </form>
-    <Home loginSuccess={loginSuccess} />
         </div>
     );
 }
