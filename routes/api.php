@@ -23,13 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::middleware('auth:sanctum')->get('/register',[AuthController::class, 'register']);
 
 //Route::middleware('auth:sanctum')->post('/register', [AuthController::class, 'register']);
-Route::post('login', [LoginController::class, 'authenticate']);
-Route::post('register', [AuthController::class, 'register']);
-Route::get('main',[CrosswordController::class,'index']);
+Route::post('/login', [LoginController::class, 'authenticate']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/main',[CrosswordController::class,'index']);
 //Route::get('main',[CrosswordController::class,'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/logout', [LoginController::class, 'disconnect']);
-Route::get('create',[CrosswordController::class,'create']);
-Route::post('store',[CrosswordController::class,'store']);
+Route::get('/create',[CrosswordController::class,'create']);
+Route::post('/store',[CrosswordController::class,'store']);
+Route::get('/show/{crossword}',[CrosswordController::class,'show']);
 });

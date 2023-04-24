@@ -17,7 +17,7 @@ return new class extends Migration
             $collection->unsignedTinyInteger('difficulty');
             $collection->json('words');
             $collection->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $collection->unique(['name', 'user_id']);
+//            $collection->unique(['name', 'user_id']);
         });
     }
 

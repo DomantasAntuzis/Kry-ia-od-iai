@@ -14,9 +14,9 @@ class CrosswordController extends Controller
      */
     public function index()
     {
-//        $crosswords = "kazkas";
-//       return $crosswords = Crossword::all();
-        return "kazkas";
+//
+       return  Crossword::all();
+
 
     }
 
@@ -26,6 +26,7 @@ class CrosswordController extends Controller
     public function create()
     {
         // redirect to create form
+        return redirect('api/store');
     }
 
     /**
@@ -92,7 +93,13 @@ class CrosswordController extends Controller
 
     function show(Crossword $crossword)
     {
-        //
+//return selected crossword
+//        dd($crossword);
+        $res = [
+            'crossword' => $crossword,
+            'success' => 'true'
+        ];
+        return response()->json($res, 200);
     }
 
     /**
