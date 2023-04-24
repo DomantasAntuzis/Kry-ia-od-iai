@@ -30,7 +30,6 @@ export default function Login() {
                 if (response.ok) {
                     // Set login success state to true
                     setLoginSuccess(true);
-                    console.log(response);
                     // Registration success, clear form data
                     setFormData({
                         name: "",

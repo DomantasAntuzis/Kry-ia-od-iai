@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\CrosswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::middleware('auth:sanctum')->get('/register',[AuthController::class, 'register']);
 
 //Route::middleware('auth:sanctum')->post('/register', [AuthController::class, 'register']);
-Route::post('/login', [LoginController::class, 'authenticate']);
-Route::middleware('auth:sanctum')->post('/logout', [LoginController::class, 'disconnect']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('login', [LoginController::class, 'authenticate']);
+Route::post('register', [AuthController::class, 'register']);
+Route::get('main',[CrosswordController::class,'index']);
+//Route::get('main',[CrosswordController::class,'index']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+Route::post('/logout', [LoginController::class, 'disconnect']);
+Route::get('create',[CrosswordController::class,'create']);
+Route::post('store',[CrosswordController::class,'store']);
+});

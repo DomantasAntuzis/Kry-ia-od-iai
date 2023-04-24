@@ -16,7 +16,6 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
-//        dd($request);
         try {
             $validateUser = Validator::make($request->all(),
                 [
