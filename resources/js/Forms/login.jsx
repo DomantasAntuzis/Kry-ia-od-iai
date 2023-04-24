@@ -35,6 +35,7 @@ export default function Login() {
 
                     setLoginSuccess(true);
                     console.log(response);
+                    // Registration success, clear form data
                     setFormData({
                         name: "",
                         password: "",
