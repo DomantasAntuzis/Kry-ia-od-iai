@@ -28,10 +28,13 @@ export default function Login() {
         })
             .then((response) => {
                 if (response.ok) {
-                    // Set login success state to true
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    const event = new Event("storage");
+                    window.dispatchEvent(event);
+
                     setLoginSuccess(true);
                     console.log(response);
-                    // Registration success, clear form data
                     setFormData({
                         name: "",
                         password: "",
@@ -60,18 +63,7 @@ export default function Login() {
     if (loginSuccess) {
         console.log(loginSuccess);
     }
-
-
-    // const LogOut = () =>{
-    //     fetch("api/logout", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             Accept: "application/json",
-    //             "X-CSRF-TOKEN": csrfToken,
-    //         },
-    //     })
-    // }
+    
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>
