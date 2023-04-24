@@ -17,7 +17,6 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(csrfToken)
         fetch("api/login", {
             method: "POST",
             headers: {
@@ -31,7 +30,7 @@ export default function Login() {
                 if (response.ok) {
                     // Set login success state to true
                     setLoginSuccess(true);
-
+                    console.log(response);
                     // Registration success, clear form data
                     setFormData({
                         name: "",
@@ -39,15 +38,23 @@ export default function Login() {
                     });
 
                     console.log("Login success!");
+                    // Parse the JSON response
+                    return response.json();
                 } else {
-                    // Registration failed, handle error
-                    console.error("Login failed.");
+                    // Handle error response
+                    throw new Error("Login failed.");
                 }
+            })
+            .then((data) => {
+                // Access the data in the response
+                console.log(data.message);
+                console.log("Naujas_Token", data.sukurtas_token);
             })
             .catch((error) => {
                 console.error("Login failed.", error);
             });
     };
+
 
     // Access login success state
     if (loginSuccess) {
