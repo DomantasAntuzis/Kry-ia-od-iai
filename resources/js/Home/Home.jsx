@@ -64,8 +64,8 @@ export default function Home() {
             .then((data) => {
                 // Access the data in the response
                 // console.log(data.message);
-                const token = data.sukurtas_token;
-                console.log("Naujas_Token", token);
+                // const token = data.sukurtas_token;
+                // console.log("Naujas_Token", token);
             })
             .catch((error) => {
                 console.error('Logout failed.', error);
@@ -106,8 +106,8 @@ export default function Home() {
                     </div>
                 </div>
             </nav>
-            {showRegister && <Registration></Registration>}
-            {showLogin && <Login setApiToken={setApiToken}></Login>}
+            {showRegister && !isLoggedIn && <Registration setApiToken={setApiToken}></Registration>}
+            {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
         </>
     );
 }
