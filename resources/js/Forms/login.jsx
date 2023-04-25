@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-export default function Login() {
+export default function Login(props) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const [formData, setFormData] = useState({
         email: null,
@@ -34,7 +34,7 @@ export default function Login() {
                     window.dispatchEvent(event);
 
                     setLoginSuccess(true);
-                    console.log(response);
+                    // console.log(response);
                     // Registration success, clear form data
                     setFormData({
                         name: "",
@@ -51,8 +51,9 @@ export default function Login() {
             })
             .then((data) => {
                 // Access the data in the response
-                console.log(data.message);
+                // console.log(data.message);
                 console.log("Naujas_Token", data.sukurtas_token);
+                props.setApiToken(data.sukurtas_token);
             })
             .catch((error) => {
                 console.error("Login failed.", error);
@@ -64,7 +65,7 @@ export default function Login() {
     if (loginSuccess) {
         console.log(loginSuccess);
     }
-    
+
     return (
         <div className="form-container">
             <form onSubmit={handleSubmit}>

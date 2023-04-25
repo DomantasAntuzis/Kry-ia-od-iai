@@ -57,6 +57,7 @@ class LoginController extends Controller
     {
         Auth::guard('web')->logout();
         Auth::user()->tokens()->delete();
+//        dd(Auth::user());
         return [
             'message' => 'user logged out'
         ];
