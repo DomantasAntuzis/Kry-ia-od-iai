@@ -34,7 +34,7 @@ class CrosswordController extends Controller
      */
     public function store(Request $request)
     {
-//validate crossword data
+        //validate crossword data
         $data = $request->validate([
             'name' => 'required|string',
             // 'user_id' => 'required|integer',
@@ -44,7 +44,7 @@ class CrosswordController extends Controller
 
         $auth = Auth::user()->id;
 
-// check if difficulty is correct and word count match by difficulty
+        // check if difficulty is correct and word count match by difficulty
         $diff = $data['difficulty'];
         $word_count = count($data['words']);
         $allowed_word_counts = [
@@ -60,9 +60,9 @@ class CrosswordController extends Controller
             return response()->json($res, 201);
         }
 
-// check if created words don't have any symbols or numbers
+        // check if created words don't have any symbols or numbers
         foreach ($data['words'] as $word) {
-            if (preg_match('/[\d\W]/', $word)) {
+            if (preg_match('/[^\p{L}]/u', $word)) {
                 $res = [
                     'msg' => 'Not valid word format',
                     'correct' => 'Words cannot contain any numbers or symbols'
@@ -71,7 +71,7 @@ class CrosswordController extends Controller
             }
         }
 
-// if all conditions are passed, create a new collection
+        // if all conditions are passed, create a new collection
         $crossword = Crossword::create([
             'name' => $data['name'],
             'user_id' => $auth,
