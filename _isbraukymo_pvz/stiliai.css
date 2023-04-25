@@ -1,0 +1,58 @@
+#lentele {
+    /* text-align: center; */
+    position: relative;
+}
+#lentele table {
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+#lentele table td {
+    width: 35px;
+    min-width: 35px;
+    height: 35px;
+    line-height: 33px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid black;
+    padding: 0;
+    border-radius: 5px;
+}
+
+#lentele hr {
+    margin: 0;
+    position: absolute;
+    border-width: 5px;
+}
+#lentele hr.ok {
+    border-color: rgba(14, 128, 14, 0.954);
+}
+#lentele hr.fail {
+    border-color: rgba(189, 15, 27, 0.965);
+}
+
+#lentele hr.horiz {
+    left: calc((var(--x) - 1) * 40px + 6px);
+    top: calc((var(--y) - 1) * 40px + 15px + 5px);
+    width: calc((var(--len)) * 40px - 7px);
+}
+
+#lentele hr.vert {
+    rotate: 90deg;
+    transform-origin: top left;
+    left: calc((var(--x) - 1) * 40px + 20px + 5px);
+    top: calc((var(--y) - 1) * 40px + 6px);
+    width: calc((var(--len)) * 40px - 7px);
+}
+
+#lentele hr.diag {
+    rotate: 45deg;
+    transform-origin: top left;
+    left: calc((var(--x) - 1) * 40px + 9px);
+    top: calc((var(--y) - 1) * 40px + 6px);
+    width: calc((var(--len)) * 40px * 1.414 - 15px);
+}
+
+#zodziai div {
+    text-transform: uppercase;
+}
