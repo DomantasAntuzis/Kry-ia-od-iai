@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-//use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model as Eloquent;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class Crossword extends Eloquent
@@ -12,7 +12,8 @@ class Crossword extends Eloquent
     protected $fillable = [
         'name',
         'difficulty',
-        'words'
+        'words',
+        'confirmed'
     ];
     protected $connection = 'mongodb';
     protected $collection = 'crosswords';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+//use Jenssegers\Mongodb\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 
@@ -39,10 +40,11 @@ class LoginController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
+            $userID = Auth::user()->role;
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
+                'user_info' => $userID,
                 'sukurtas_token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
 

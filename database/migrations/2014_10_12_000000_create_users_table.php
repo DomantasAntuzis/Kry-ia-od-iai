@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::connection('mongodb')->create('users', function (Blueprint $collection) {
             $collection->string('name');
-            $collection->string('role');
+            $collection->string('role')->nullable();
             $collection->unique('email');
 //            $collection->timestamp('email_verified_at')->nullable();
             $collection->string('password');

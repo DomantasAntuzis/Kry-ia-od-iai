@@ -15,7 +15,9 @@ class CrosswordController extends Controller
     public function index()
     {
 //
-       return  Crossword::all();
+        return Crossword::where('confirmed', 1)->get();
+//        return Crossword::all();
+//        return Crossword::where('confirmed', 1)->get();
 
 
     }
@@ -35,12 +37,20 @@ class CrosswordController extends Controller
     public function store(Request $request)
     {
         //validate crossword data
+//        $data = $request->validate([
+//            'name' => 'required|string',
+////            'user_id' => 'required|integer',
+////            'confirmed' => 'integer',
+//            'words' => 'required|array',
+////            'questions' => 'required|array',
+//            'difficulty' => 'required|in:1,2,3'
+//        ]);
         $data = $request->validate([
             'name' => 'required|string',
-            // 'user_id' => 'required|integer',
             'words' => 'required|array',
-            'difficulty' => 'required|in:1,2,3'
+            'difficulty' => 'required|in:1,2,3',
         ]);
+
 
         $auth = Auth::user()->id;
 
@@ -76,7 +86,8 @@ class CrosswordController extends Controller
             'name' => $data['name'],
             'user_id' => $auth,
             'words' => $data['words'],
-            'difficulty' => $data['difficulty']
+            'difficulty' => $data['difficulty'],
+            'confirmed' => '0',
         ]);
         $res = [
             'crossword' => $crossword,

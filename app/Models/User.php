@@ -12,7 +12,11 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Eloquent implements Authenticatable
 {
     use AuthenticatableTrait,HasApiTokens,Notifiable;
-
+    public function hasRole(string $role): bool
+    {
+        // Check if the user's role matches the specified role
+        return $this->role === $role;
+    }
     protected $collection = 'users';
     /**
      * The attributes that are mass assignable.
