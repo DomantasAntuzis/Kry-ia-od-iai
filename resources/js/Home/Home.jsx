@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Registration from "../Forms/registration";
 import Login from "../Forms/login";
+import Crossword from "../Forms/crossword";
 
 export default function Home() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -60,13 +61,13 @@ export default function Home() {
                     throw new Error('Logout failed.');
                 }
             })
-            //this should be before fetch
-            .then((data) => {
-                // Access the data in the response
-                // console.log(data.message);
-                const token = data.sukurtas_token;
-                console.log("Naujas_Token", token);
-            })
+            // //this should be before fetch
+            // .then((data) => {
+            //     // Access the data in the response
+            //     // console.log(data.message);
+            //     const token = data.sukurtas_token;
+            //     console.log("Naujas_Token", token);
+            // })
             .catch((error) => {
                 console.error('Logout failed.', error);
             });
@@ -75,11 +76,21 @@ export default function Home() {
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
+
+
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
                         Navbar
                     </a>
                     <div className="d-flex">
+                        <button type="button" className="btn btn-outline-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                 className="bi bi-plus-lg" viewBox="0 0 18 18">
+                                <path fillRule="evenodd"
+                                      d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                            </svg>
+                            Crossword
+                        </button>
                         {isLoggedIn ? (
                             <button
                                 className="btn btn-outline-success"
@@ -106,8 +117,9 @@ export default function Home() {
                     </div>
                 </div>
             </nav>
-            {showRegister && <Registration></Registration>}
-            {showLogin && <Login setApiToken={setApiToken}></Login>}
+            {showRegister && !isLoggedIn && <Registration></Registration>}
+            {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
+            {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
         </>
     );
 }
