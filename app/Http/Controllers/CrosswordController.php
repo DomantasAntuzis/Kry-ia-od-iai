@@ -16,8 +16,6 @@ class CrosswordController extends Controller
     {
 //
         return Crossword::where('confirmed', '1')->get();
-//        return Crossword::all();
-//        return Crossword::where('confirmed', 1)->get();
 
 
     }
