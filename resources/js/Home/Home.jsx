@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Registration from "../Forms/registration";
 import Login from "../Forms/login";
+import Crosswords from "../Crossword/Crosswords";
 import Crossword from "../Forms/crossword";
 
 export default function Home() {
@@ -123,10 +124,12 @@ export default function Home() {
             </nav>
 
             {showRegister && !isLoggedIn && <Registration></Registration>}
-            {showLogin && !isLoggedIn && (
-                <Login setApiToken={setApiToken}></Login>
-            )}
-            {isLoggedIn && <Crossword setApiToken={setApiToken}></Crossword>}
+
+            {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
+            {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
+            <Crosswords></Crosswords>
+
+
         </>
     );
 }
