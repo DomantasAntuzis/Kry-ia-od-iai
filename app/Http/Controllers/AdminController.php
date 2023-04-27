@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    public function preview( Crossword $crossword)
+    public function preview(Crossword $crossword)
     {
         //preview not confirmed crossword
         return $crossword;
     }
-    public function confirm( Crossword $crossword)
+
+    public function confirm(Crossword $crossword)
     {
         // crossword confirmation
         $crossword->confirmed = 1;
@@ -24,10 +25,22 @@ class AdminController extends Controller
             'confirmed' => true,
         ]);
     }
-    public function waiting( Crossword $crossword)
+
+    public function waiting(Crossword $crossword)
     {
         //preview all non confirmed crosswords
-        return Crossword::all()->where('confirmed',0);
+        return Crossword::all()->where('confirmed', 0);
+
+    }
+
+    public function remove(Crossword $crossword)
+    {
+        //delete selected crossword
+        $crossword->destroy($crossword->_id);
+        return response()->json([
+            'Remove_status' => true,
+            'success' => true,
+        ]);
     }
 
 }
