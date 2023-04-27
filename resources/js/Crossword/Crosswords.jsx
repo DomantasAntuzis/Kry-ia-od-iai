@@ -87,6 +87,7 @@ export default function crosswords(props) {
                 })
                 .then((data) => {
                     // Handle the response data here
+                    console.log(data.crossword.name);
                 })
                 .catch((error) => {
                     console.error("Something wrong!.", error);
