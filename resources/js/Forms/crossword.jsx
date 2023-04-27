@@ -9,8 +9,9 @@ export default function Crossword(props) {
 
     const handleRadio = (value) => {
         setFormData({
-            ...formData,
-            difficulty: value,
+            name: "",
+        words: [],
+        difficulty: value,
         });
         console.log(`Radio button with value ${value} clicked`);
     };
