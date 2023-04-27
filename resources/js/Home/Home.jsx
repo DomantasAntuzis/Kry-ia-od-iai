@@ -61,6 +61,7 @@ export default function Home() {
                     throw new Error('Logout failed.');
                 }
             })
+
             // //this should be before fetch
             // .then((data) => {
             //     // Access the data in the response
@@ -68,6 +69,7 @@ export default function Home() {
             //     const token = data.sukurtas_token;
             //     console.log("Naujas_Token", token);
             // })
+
             .catch((error) => {
                 console.error('Logout failed.', error);
             });
@@ -117,9 +119,11 @@ export default function Home() {
                     </div>
                 </div>
             </nav>
+
             {showRegister && !isLoggedIn && <Registration></Registration>}
             {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
             {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
+
         </>
     );
 }

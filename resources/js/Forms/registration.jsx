@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Registration = () => {
+const Registration = (props) => {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const [formData, setFormData] = useState({
         name: "",
@@ -28,7 +28,13 @@ const Registration = () => {
             body: JSON.stringify(formData),
         })
             .then((response) => {
+                console.log(response)
                 if (response.ok) {
+                    localStorage.setItem('isLoggedIn', 'true');
+
+                    const event = new Event("storage");
+                    window.dispatchEvent(event);
+
                     // Registration success, clear form data
                     setFormData({
                         name: "",
@@ -36,10 +42,16 @@ const Registration = () => {
                         password: "",
                     });
                     console.log("Registration success!");
+                    return response.json();
                 } else {
                     // Registration failed, handle error
                     console.error("Registration failed.");
                 }
+            }).then((data) => {
+                // Access the data in the response
+                // console.log(data.message);
+                console.log("Naujas_Token", data.token);
+                props.setApiToken(data.token);
             })
             .catch((error) => {
                 console.error("Registration failed.", error);
