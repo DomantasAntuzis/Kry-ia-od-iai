@@ -21,23 +21,25 @@ use App\Http\Controllers\AdminController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//Route::middleware('auth:sanctum')->get('/register',[AuthController::class, 'register']);
 
-//Route::middleware('auth:sanctum')->post('/register', [AuthController::class, 'register']);
+//non authorized routes
 Route::post('/login', [LoginController::class, 'authenticate']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/main', [CrosswordController::class, 'index']);
-//Route::get('main',[CrosswordController::class,'index']);
+Route::get('/show/{crossword}', [CrosswordController::class, 'show']);
 
+//authorized routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [LoginController::class, 'disconnect']);
     Route::get('/create', [CrosswordController::class, 'create']);
     Route::post('/store', [CrosswordController::class, 'store']);
 });
+
+//admin routes
 Route::middleware(['auth:sanctum', 'checkRole:admin'])->group(function () {
     Route::get('responding', [AdminController::class, 'waiting']);
     Route::put('confirm/{crossword}', [AdminController::class, 'confirm']);
     Route::prefix('admin')->get('preview/{crossword}', [AdminController::class, 'preview']);
-    Route::get('/show/{crossword}', [CrosswordController::class, 'show']);
+    Route::post('remove/{crossword}', [AdminController::class, 'remove']);
 });
 
