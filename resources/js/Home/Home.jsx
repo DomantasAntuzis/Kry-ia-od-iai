@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Registration from "../Forms/registration";
 import Login from "../Forms/login";
-import Crossword from "../Forms/crossword";
+import Crosswords from "../Crossword/Crosswords";
+// import Crossword from "../Forms/crossword";
 
 export default function Home() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -11,6 +12,9 @@ export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem("isLoggedIn") === "true"
     );
+
+    const [fetch_crossword, setfetch_crossword] = useState([]);
+    const [crosswords_loaded, set_crossword_loaded] = useState(false);
 
     useEffect(() => {
         function handleStorageChange() {
@@ -23,6 +27,7 @@ export default function Home() {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
+
 
     //display register form
 
@@ -75,32 +80,32 @@ export default function Home() {
                     </a>
                     <div className="d-flex">
                         {isLoggedIn ? (
-                        <div>
-                        <button
-                            type="button"
-                            className="btn btn-outline-success"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="currentColor"
-                                className="bi bi-plus-lg"
-                                viewBox="0 0 18 18"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
-                                />
-                            </svg>
-                            Crossword
-                        </button>
-                            <button
-                                className="btn btn-outline-success"
-                                onClick={handleLogout}
-                            >
-                                Log Out
-                            </button>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-success"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        fill="currentColor"
+                                        className="bi bi-plus-lg"
+                                        viewBox="0 0 18 18"
+                                    >
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+                                        />
+                                    </svg>
+                                    Crossword
+                                </button>
+                                <button
+                                    className="btn btn-outline-success"
+                                    onClick={handleLogout}
+                                >
+                                    Log Out
+                                </button>
                             </div>
                         ) : (
                             <div>
@@ -123,10 +128,15 @@ export default function Home() {
             </nav>
 
             {showRegister && !isLoggedIn && <Registration></Registration>}
-            {showLogin && !isLoggedIn && (
-                <Login setApiToken={setApiToken}></Login>
-            )}
-            {isLoggedIn && <Crossword setApiToken={setApiToken}></Crossword>}
+
+            {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
+            {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
+            <Crosswords fetch_crossword={fetch_crossword}
+                        setfetch_crossword={setfetch_crossword}
+                        crosswords_loaded={crosswords_loaded}
+                        set_crossword_loaded={set_crossword_loaded}></Crosswords>
+
+
         </>
     );
 }
