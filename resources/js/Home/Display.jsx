@@ -20,6 +20,34 @@ export default function Home() {
     );
   }, []);
 
+  // check if word can be added
+
+  const canAddWord = (word, startRow, startCol, grid) => {
+    const { direction } = word;
+    const letters = word.word.split("");
+  
+    for (let i = 0; i < letters.length; i++) {
+      const row = direction === "across" ? startRow : startRow + i;
+      const col = direction === "across" ? startCol + i : startCol;
+  
+      // Check if the letter in the grid matches the letter in the word
+      if (grid[row][col].letter && grid[row][col].letter !== letters[i]) {
+        return false;
+      }
+  
+      // Check if the letter in the grid is shared with another word
+      if (grid[row][col].word) {
+        const sharedLetter = grid[row][col].word.find((letter) => letter === letters[i]);
+        if (sharedLetter && sharedLetter !== letters[i]) {
+          return false;
+        }
+      }
+    }
+  
+    return true;
+  };
+  
+
   const handleCellClick = (row, col) => {
     setGrid((prevGrid) => {
       const newGrid = [...prevGrid];
@@ -93,9 +121,10 @@ export default function Home() {
     const startCol = prompt("Enter starting column:");
   
     // Convert startRow and startCol to numbers
-    const startRowIndex = parseInt(startRow);
-    const startColIndex = parseInt(startCol);
+    const startRowIndex = parseInt(startRow) - 1;
+    const startColIndex = parseInt(startCol) - 1;
   
+    if (canAddWord(selectedWord, startRowIndex, startColIndex, grid )){
     // Add the selected word to the grid
     setGrid((prevGrid) => {
       const newGrid = [...prevGrid];
@@ -118,6 +147,7 @@ export default function Home() {
   
       return newGrid;
     });
+  }
   };
   
   
@@ -188,8 +218,6 @@ export default function Home() {
   <h2>Selected Word</h2>
   <p>Word: {selectedWord.word}</p>
   <p>Direction: {selectedWord.direction}</p>
-  <p>Start Row: {selectedWord.startRow}</p>
-  <p>Start Col: {selectedWord.startCol}</p>
   </div>
   )}
   </div>
