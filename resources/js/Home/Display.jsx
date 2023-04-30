@@ -35,8 +35,20 @@ export default function Home() {
     const letters = word.word.split("");
   
     for (let i = 0; i < letters.length; i++) {
-      const row = direction === "across" ? startRow : startRow + i;
-      const col = direction === "across" ? startCol + i : startCol;
+      let row, col;
+      if (direction === "right") {
+        row = startRow;
+        col = startCol + i;
+      } else if (direction === "down") {
+        row = startRow + i;
+        col = startCol;
+      } else if (direction === "left") {
+        row = startRow;
+        col = startCol - i;
+      } else if (direction === "up") {
+        row = startRow - i;
+        col = startCol;
+      }
   
       // Check if the letter in the grid matches the letter in the word
       if (grid[row][col].letter && grid[row][col].letter !== letters[i]) {
@@ -57,33 +69,47 @@ export default function Home() {
   
 
   const handleCellClick = (row, col) => {
-    
-    if(selectedWord){
-      
+    if (selectedWord) {
       const startRowIndex = row;
       const startColIndex = col;
-      
-      if (canAddWord(selectedWord, startRowIndex, startColIndex, grid )){
+  
+      if (canAddWord(selectedWord, startRowIndex, startColIndex, grid)) {
         // Add the selected word to the grid
         setGrid((prevGrid) => {
           const newGrid = [...prevGrid];
-          
+  
           // Add the word horizontally
-          if (selectedWord.direction === "across") {
+          if (selectedWord.direction === "right") {
             for (let coll = 0; coll < selectedWord.word.length; coll++) {
               const letter = selectedWord.word.charAt(coll);
               newGrid[startRowIndex][startColIndex + coll] = { letter, selected: false };
             }
           }
-          
+  
           // Add the word vertically
-          else {
+          else if (selectedWord.direction === "down") {
             for (let roww = 0; roww < selectedWord.word.length; roww++) {
               const letter = selectedWord.word.charAt(roww);
               newGrid[startRowIndex + roww][startColIndex] = { letter, selected: false };
             }
           }
-          
+  
+          // Add the word from right to left
+          else if (selectedWord.direction === "left") {
+            for (let coll = 0; coll < selectedWord.word.length; coll++) {
+              const letter = selectedWord.word.charAt(coll);
+              newGrid[startRowIndex][startColIndex - coll] = { letter, selected: false };
+            }
+          }
+  
+          // Add the word from bottom to top
+          else if (selectedWord.direction === "up") {
+            for (let roww = 0; roww < selectedWord.word.length; roww++) {
+              const letter = selectedWord.word.charAt(roww);
+              newGrid[startRowIndex - roww][startColIndex] = { letter, selected: false };
+            }
+          }
+  
           return newGrid;
         });
       }
@@ -98,7 +124,7 @@ export default function Home() {
       ...words,
       {
         word: newWord,
-        direction: "across"
+        direction: "right"
       },
     ]);
     input.value = "";
@@ -188,8 +214,10 @@ export default function Home() {
   value={word.direction}
   onChange={(event) => handleWordChange(event, i, "direction")}
   >
-  <option value="across">Across</option>
+  <option value="right">Right</option>
   <option value="down">Down</option>
+  <option value="left">Left</option>
+  <option value="up">Up</option>
   </select>
   <button onClick={() => handleWordSelection(word)}>Select</button>
   </li>
