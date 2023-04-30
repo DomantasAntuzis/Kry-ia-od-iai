@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../../scss/styles.scss";
 
-const GRID_SIZE = { rows: 10, cols: 15 };
-
 export default function Home() {
+  const [gridSize, setGridSize] = useState({ rows: 10, cols: 15 });
   const [grid, setGrid] = useState(
-    Array.from({ length: GRID_SIZE.rows }).map(() =>
-      Array.from({ length: GRID_SIZE.cols }).fill({ letter: null, selected: false })
+    Array.from({ length: gridSize.rows }).map(() =>
+      Array.from({ length: gridSize.cols }).fill({ letter: null, selected: false })
     )
   );
   const [words, setWords] = useState([]);
@@ -14,11 +13,20 @@ export default function Home() {
 
   useEffect(() => {
     setGrid(
-      Array.from({ length: GRID_SIZE.rows }).map(() =>
-        Array.from({ length: GRID_SIZE.cols }).fill({ letter: null, selected: false })
+      Array.from({ length: gridSize.rows }).map(() =>
+        Array.from({ length: gridSize.cols }).fill({ letter: null, selected: false })
       )
     );
   }, []);
+
+  useEffect(() => {
+    setGrid(
+      Array.from({ length: gridSize.rows }).map(() =>
+        Array.from({ length: gridSize.cols }).fill({ letter: null, selected: false })
+      )
+    );
+  }, [gridSize]);
+
 
   // check if word can be added
 
@@ -107,6 +115,29 @@ export default function Home() {
   newWords[i][key] = event.target.value;
   setWords(newWords);
   };
+
+  // change grid size
+  const handleGridSizeChange = (rows, cols) => {
+    setGridSize({ rows, cols });
+    console.log(grid);
+  };
+
+  //fill empty spaces
+  const fillEmptySquares = () => {
+    setGrid((prevGrid) => {
+      const newGrid = prevGrid.map((row) =>
+        row.map((cell) => {
+          if (!cell.letter) {
+            const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            return { ...cell, letter: randomLetter };
+          }
+          return cell;
+        })
+      );
+      return newGrid;
+    });
+  };
+  
   
   return (
   <div className="crossword">
@@ -130,6 +161,14 @@ export default function Home() {
   ))}
   </tbody>
   </table>
+  {selectedWord && (
+     <div>
+     <h2>Selected Word</h2>
+     <h5>Choose starting square</h5>
+     <p>Word: {selectedWord.word}</p>
+     <p>Direction: {selectedWord.direction}</p>
+     </div>
+  )}
   </div>
   <form onSubmit={handleAddWord}>
   <input type="text" name="word" placeholder="Enter a word" />
@@ -157,6 +196,13 @@ export default function Home() {
   ))}
   </ul>
   </div>
+  <h2>Grid Size</h2>
+        <button onClick={() => handleGridSizeChange(5, 10)}>5x10</button>
+        <button onClick={() => handleGridSizeChange(10, 15)}>10x15</button>
+        <button onClick={() => handleGridSizeChange(15, 20)}>15x20</button>
+  <h2>fill empty spaces</h2>
+        <button onClick={fillEmptySquares}>fill</button>
+
   </div>
   );
 };
