@@ -49,15 +49,37 @@ export default function Home() {
   
 
   const handleCellClick = (row, col) => {
-    setGrid((prevGrid) => {
-      const newGrid = [...prevGrid];
-      newGrid[row][col].selected = !newGrid[row][col].selected;
-
-      const word = getSelectedWord(newGrid, row, col);
-      setSelectedWord(word);
-
-      return newGrid;
-    });
+    
+    if(selectedWord){
+      
+      const startRowIndex = row;
+      const startColIndex = col;
+      
+      if (canAddWord(selectedWord, startRowIndex, startColIndex, grid )){
+        // Add the selected word to the grid
+        setGrid((prevGrid) => {
+          const newGrid = [...prevGrid];
+          
+          // Add the word horizontally
+          if (selectedWord.direction === "across") {
+            for (let coll = 0; coll < selectedWord.word.length; coll++) {
+              const letter = selectedWord.word.charAt(coll);
+              newGrid[startRowIndex][startColIndex + coll] = { letter, selected: false };
+            }
+          }
+          
+          // Add the word vertically
+          else {
+            for (let roww = 0; roww < selectedWord.word.length; roww++) {
+              const letter = selectedWord.word.charAt(roww);
+              newGrid[startRowIndex + roww][startColIndex] = { letter, selected: false };
+            }
+          }
+          
+          return newGrid;
+        });
+      }
+    }
   };
 
   const handleAddWord = (event) => {
@@ -68,93 +90,15 @@ export default function Home() {
       ...words,
       {
         word: newWord,
-        direction: "across",
-        startRow: 0,
-        startCol: 0,
+        direction: "across"
       },
     ]);
     input.value = "";
   };
 
-  const getSelectedWord = (grid, row, col) => {
-    // Check if there is a selected word across
-    let startCol = col;
-    while (startCol > 0 && grid[row][startCol - 1].selected) {
-      startCol--;
-    }
-    let endCol = col;
-    while (endCol < GRID_SIZE.cols - 1 && grid[row][endCol + 1].selected) {
-      endCol++;
-    }
-    if (endCol > startCol) {
-      return {
-        word: grid[row].slice(startCol, endCol + 1).map((cell) => cell.letter).join(""),
-        direction: "across",
-        startRow: row,
-        startCol,
-      };
-    }
-
-    // Check if there is a selected word down
-    let startRow = row;
-    while (startRow > 0 && grid[startRow - 1][col].selected) {
-      startRow--;
-    }
-    let endRow = row;
-    while (endRow < GRID_SIZE.rows - 1 && grid[endRow + 1][col].selected) {
-      endRow++;
-    }
-    if (endRow > startRow) {
-      return {
-        word: grid.slice(startRow, endRow + 1).map((row) => row[col].letter).join(""),
-        direction: "down",
-        startRow,
-        startCol: col,
-      };
-    }
-    
-    return null;
-  };
-
-  const handleAddSelectedWord = (selectedWord) => {
-    const startRow = prompt("Enter starting row:");
-    const startCol = prompt("Enter starting column:");
-  
-    // Convert startRow and startCol to numbers
-    const startRowIndex = parseInt(startRow) - 1;
-    const startColIndex = parseInt(startCol) - 1;
-  
-    if (canAddWord(selectedWord, startRowIndex, startColIndex, grid )){
-    // Add the selected word to the grid
-    setGrid((prevGrid) => {
-      const newGrid = [...prevGrid];
-  
-      // Add the word horizontally
-      if (selectedWord.direction === "across") {
-        for (let col = 0; col < selectedWord.word.length; col++) {
-          const letter = selectedWord.word.charAt(col);
-          newGrid[startRowIndex][startColIndex + col] = { letter, selected: false };
-        }
-      }
-  
-      // Add the word vertically
-      else {
-        for (let row = 0; row < selectedWord.word.length; row++) {
-          const letter = selectedWord.word.charAt(row);
-          newGrid[startRowIndex + row][startColIndex] = { letter, selected: false };
-        }
-      }
-  
-      return newGrid;
-    });
-  }
-  };
-  
-  
-
   const handleWordSelection = (word) => {
   setSelectedWord(word);
-   handleAddSelectedWord(word);
+  //  handleAddSelectedWord(word);
   console.log(word); 
   };
   
@@ -213,13 +157,6 @@ export default function Home() {
   ))}
   </ul>
   </div>
-  {selectedWord && (
-  <div>
-  <h2>Selected Word</h2>
-  <p>Word: {selectedWord.word}</p>
-  <p>Direction: {selectedWord.direction}</p>
-  </div>
-  )}
   </div>
   );
 };
