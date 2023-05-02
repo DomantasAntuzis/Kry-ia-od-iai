@@ -2,13 +2,14 @@
 
 .table-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
   }
   
   table {
     border-collapse: collapse;
+    margin: 20px;
   }
   
   td {
@@ -17,4 +18,38 @@
     height: 50px;
     text-align: center;
     vertical-align: middle;
+  }
+
+  // #selectedWord {
+  //   margin-left: 20px;
+  //   display: flex;
+  //   align-items: start;
+  // }
+
+  ul.wordList li {
+    list-style: none;
+  }
+
+  #addWordForm{
+    padding-left: 32px;
+  }
+
+  #addWord h2 {
+    padding-left: 32px;
+  }
+
+  #functionBtns{
+    text-align: center;
+  }
+
+  #functionBtns h2{
+margin-bottom: 10px;
+  }
+  #functionBtns div{
+display: inline-block;
+padding: 20px;
+  }
+  #functionBtns button{
+    display: inline-block;
+    margin: 10px;
   }
