@@ -55,18 +55,18 @@ class CrosswordController extends Controller
         // check if difficulty is correct and word count match by difficulty
         $diff = $data['difficulty'];
         $word_count = count($data['words']);
-        $allowed_word_counts = [
-            1 => 4,
-            2 => 8,
-            3 => 12
-        ];
-        if ($word_count !== $allowed_word_counts[$diff]) {
-            $res = [
-                'msg' => 'Wrong word count for the given difficulty level',
-                'correct' => 'The correct word count for difficulty level ' . $diff . ' is ' . $allowed_word_counts[$diff]
-            ];
-            return response()->json($res, 201);
-        }
+//        $allowed_word_counts = [
+//            1 => 4,
+//            2 => 8,
+//            3 => 12
+//        ];
+//        if ($word_count !== $allowed_word_counts[$diff]) {
+//            $res = [
+//                'msg' => 'Wrong word count for the given difficulty level',
+//                'correct' => 'The correct word count for difficulty level ' . $diff . ' is ' . $allowed_word_counts[$diff]
+//            ];
+//            return response()->json($res, 201);
+//        }
 
         // check if created words don't have any symbols or numbers
         foreach ($data['words'] as $word) {

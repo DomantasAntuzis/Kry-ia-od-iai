@@ -13,8 +13,8 @@ export default function Home() {
         localStorage.getItem("isLoggedIn") === "true"
     );
 
-    const [fetch_crossword, setfetch_crossword] = useState([]);
-    const [crosswords_loaded, set_crossword_loaded] = useState(false);
+    const [fetchCrossword, setFetchCrossword] = useState([]);
+    const [crosswordsLoaded, setCrosswordLoaded] = useState(false);
 
     useEffect(() => {
         function handleStorageChange() {
@@ -27,6 +27,9 @@ export default function Home() {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
+
+
+    //show crosswords
 
 
     //display register form
@@ -131,10 +134,10 @@ export default function Home() {
 
             {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
             {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
-            <Crosswords fetch_crossword={fetch_crossword}
-                        setfetch_crossword={setfetch_crossword}
-                        crosswords_loaded={crosswords_loaded}
-                        set_crossword_loaded={set_crossword_loaded}></Crosswords>
+            <Crosswords fetchCrossword={fetchCrossword}
+                        setFetchCrossword={setFetchCrossword}
+                        crosswordsLoaded={crosswordsLoaded}
+                        setCrosswordLoaded={setCrosswordLoaded}></Crosswords>
 
 
         </>
