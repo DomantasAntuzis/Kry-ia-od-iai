@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../scss/styles.scss";
 
 export default function Home() {
+    const [name, setName] = useState("");
     const [gridSize, setGridSize] = useState({ rows: 10, cols: 15 });
     const [grid, setGrid] = useState(
         Array.from({ length: gridSize.rows }).map(() =>
@@ -12,6 +13,7 @@ export default function Home() {
         )
     );
     const [words, setWords] = useState([]);
+    const [usedWords, setUsedWords] = useState([]);
     const [selectedWord, setSelectedWord] = useState(null);
 
     useEffect(() => {
@@ -100,6 +102,14 @@ export default function Home() {
                                 selected: false,
                             };
                         }
+                        setUsedWords([
+                            ...usedWords,
+                            {
+                                word: selectedWord.word,
+                                direction: "right",
+                            },
+                        ]);
+                        // console.log(selectedWord)
                     }
 
                     // Add the word vertically
@@ -115,6 +125,13 @@ export default function Home() {
                                 selected: false,
                             };
                         }
+                        setUsedWords([
+                            ...usedWords,
+                            {
+                                word: selectedWord.word,
+                                direction: "down",
+                            },
+                        ]);
                     }
 
                     // Add the word from right to left
@@ -130,6 +147,13 @@ export default function Home() {
                                 selected: false,
                             };
                         }
+                        setUsedWords([
+                            ...usedWords,
+                            {
+                                word: selectedWord.word,
+                                direction: "left",
+                            },
+                        ]);
                     }
 
                     // Add the word from bottom to top
@@ -145,6 +169,13 @@ export default function Home() {
                                 selected: false,
                             };
                         }
+                        setUsedWords([
+                            ...usedWords,
+                            {
+                                word: selectedWord.word,
+                                direction: "up",
+                            },
+                        ]);
                     }
 
                     return newGrid;
@@ -206,7 +237,27 @@ export default function Home() {
 
     const test = () => {
         console.log(grid);
+        console.log(usedWords);
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const data = { name: name, grid: grid, usedWords:usedWords };
+        console.log(data)
+        // url kad ir koks jis yra.
+        // fetch(url, {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(data),
+        // })
+        //   .then((response) => {
+        //     console.log("Form submitted successfully");
+        //   })
+        //   .catch((error) => {
+        //     console.error("Error submitting form:", error);
+        //   });
+      };
+    
 
     return (
         <div className="crossword">
@@ -305,6 +356,19 @@ export default function Home() {
                     <h2>fill empty spaces</h2>
                     <button onClick={fillEmptySquares}>fill</button>
                     <button onClick={test}>current grid</button>
+                </div>
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Name:
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
