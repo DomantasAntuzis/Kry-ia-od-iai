@@ -3,11 +3,18 @@ import {useState, useEffect} from "react";
 export default function crosswords(props) {
 
     const [selectedId, setSelectedId] = useState(null);
+    const [showCrosswords, setShowCrossword] = useState(false);
+
+    const displayCrosswords = () => {
+        setShowCrossword(!showCrosswords);
+        // setShowLogin(false);
+        // setShowRegister(false);
+    }
 
     useEffect(() => {
 
-        console.log(!props.crosswords_loaded);
-        if (!props.crosswords_loaded) {
+        console.log(!props.crosswordsLoaded);
+        if (!props.crosswordsLoaded) {
             fetch("api/main", {
                 method: "GET",
                 headers: {
@@ -25,8 +32,8 @@ export default function crosswords(props) {
                 .then((data) => {
                     console.log(data);
 
-                    props.set_crossword_loaded(true);
-                    props.setfetch_crossword(
+                    props.setCrosswordLoaded(true);
+                    props.setFetchCrossword(
                         <div className="container">
                             <div className="row row-cols-1 row-cols-md-4 g-4">
                                 {data.map((element, index) => (
@@ -45,9 +52,9 @@ export default function crosswords(props) {
                                                         <p className="text-danger">hard</p>
                                                     )}
                                                 </p>
+                                            <p>Žodžių kiekis {element.words.length}</p>
                                             </div>
-                                            <div className="card-footer bg-transparent border-success">Žodžių
-                                                kiekis {element.words.length}</div>
+                                            <div className="card-footer bg-transparent border-success"></div>
                                             {/*<h1>{element._id}</h1>*/}
                                             <button onClick={() => setSelectedId(element._id)}
                                                     className="btn btn-outline-dark">Žaisti
@@ -66,7 +73,7 @@ export default function crosswords(props) {
                 });
         }
 
-    }, [props.fetch_crossword, props.crosswords_loaded]);
+    }, [props.fetchCrossword, props.crosswordsLoaded]);
 
     useEffect(() => {
         if (selectedId !== null) {
@@ -87,7 +94,10 @@ export default function crosswords(props) {
                 })
                 .then((data) => {
                     // Handle the response data here
-                    console.log(data.crossword.name);
+                    //
+                    const words = data.crossword.words;
+                    const title = data.crossword.name;
+                    console.log(words,title);
                 })
                 .catch((error) => {
                     console.error("Something wrong!.", error);
@@ -95,7 +105,7 @@ export default function crosswords(props) {
         }
     }, [selectedId]);
 
-    console.log(props.fetch_crossword);
+    console.log(props.fetchCrossword);
 
-    return <div>{props.fetch_crossword}</div>;
+    return <div>{props.fetchCrossword}</div>;
 }
