@@ -40,11 +40,11 @@ class LoginController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-            $userID = Auth::user()->role;
+            $userRole = Auth::user()->role;
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
-                'user_info' => $userID,
+                'user_info' => $userRole,
                 'sukurtas_token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
 

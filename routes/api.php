@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [LoginController::class, 'disconnect']);
     Route::get('/create', [CrosswordController::class, 'create']);
     Route::post('/store', [CrosswordController::class, 'store']);
+    Route::post('/usrinfo',[AuthController::class, 'user_auth']);
 });
 
 //admin routes

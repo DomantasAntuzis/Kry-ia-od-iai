@@ -52,7 +52,8 @@ export default function Login(props) {
             .then((data) => {
                 // Access the data in the response
                 // console.log(data.message);
-                console.log(data.user_info === 'admin');
+                console.log(data.user_info);
+                props.setAdmin(data.user_info);
                 // console.log("Naujas_Token", data.sukurtas_token);
                 props.setApiToken(data.sukurtas_token);
             })

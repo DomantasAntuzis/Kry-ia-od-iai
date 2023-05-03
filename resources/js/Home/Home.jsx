@@ -16,6 +16,7 @@ export default function Home() {
     const [fetchCrossword, setFetchCrossword] = useState([]);
     const [crosswordsLoaded, setCrosswordLoaded] = useState(false);
     const [showMaker, setShowMaker] = useState(false);
+    const [showCrosswords,setShowCrosswords] = useState(false);
 
     useEffect(() => {
         function handleStorageChange() {
@@ -48,8 +49,13 @@ export default function Home() {
     const displayCrosswordMaker = () => {
         setShowMaker(!showMaker);
         setShowRegister(false);
-    };
 
+    };
+    //display non confirmed crosswords
+    const displayCrosswords = () => {
+        setShowCrosswords(!showCrosswords);
+        setShowMaker(false);
+    }
     //logout logic
 
     const handleLogout = () => {
@@ -89,6 +95,9 @@ export default function Home() {
                     <div className="d-flex">
                         {isLoggedIn ? (
                             <div>
+                                <button type="button"
+                                    className="btn btn-outline-success"
+                                    onClick={displayCrosswords}>crosswords</button>
                                 <button
                                     type="button"
                                     className="btn btn-outline-success"
@@ -136,20 +145,20 @@ export default function Home() {
                 </div>
             </nav>
         )}
-    
+
         {showRegister && !isLoggedIn && <Registration></Registration>}
-    
+
         {showLogin && !isLoggedIn && (
             <Login setApiToken={setApiToken}></Login>
         )}
-    
+
         {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
-        {/* <Crosswords
+        <Crosswords
             fetchCrossword={fetchCrossword}
             setFetchCrossword={setFetchCrossword}
             crosswordsLoaded={crosswordsLoaded}
             setCrosswordLoaded={setCrosswordLoaded}
-        ></Crosswords> */}
+        ></Crosswords>
     </>
     )
 }

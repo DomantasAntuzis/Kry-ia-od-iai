@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -35,4 +33,23 @@ class AuthController extends Controller
         return response()->json($res, 201);
     }
 
+    public function user_auth()
+    {
+
+        $user = Auth::user();
+        $tokens = $user->tokens;
+//        dd($tokens);
+         if(!count($tokens)){
+             $res = false;
+         } else {
+             $res = true;
+         }
+
+        $res = [
+            'status' => $res
+        ];
+
+        return response()->json($res, 201);
+
+    }
 }
