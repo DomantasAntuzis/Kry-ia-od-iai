@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../../scss/styles.scss";
 
-export default function Home() {
+export default function Maker(props) {
     const [name, setName] = useState("");
     const [gridSize, setGridSize] = useState({ rows: 10, cols: 15 });
     const [grid, setGrid] = useState(
@@ -15,6 +15,8 @@ export default function Home() {
     const [words, setWords] = useState([]);
     const [usedWords, setUsedWords] = useState([]);
     const [selectedWord, setSelectedWord] = useState(null);
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+    const apiToken = props.apiToken;
 
     useEffect(() => {
         setGrid(
@@ -238,6 +240,7 @@ export default function Home() {
     const test = () => {
         console.log(grid);
         console.log(usedWords);
+        console.log(apiToken);
     };
 
     const handleSubmit = (event) => {
@@ -250,10 +253,11 @@ export default function Home() {
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            // "X-CSRF-TOKEN": csrfToken,
+            "X-CSRF-TOKEN": csrfToken,
+            Authorization: `Bearer ${apiToken}`,
         },
         //   "X-CSRF-TOKEN": csrfToken,
-          body: JSON.stringify(data),
+          body: JSON.stringify({data}),
         })
           .then((response) => {
             console.log("Form submitted successfully");

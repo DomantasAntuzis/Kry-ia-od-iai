@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Registration from "../Forms/registration";
 import Login from "../Forms/login";
 import Crosswords from "../Crossword/Crosswords";
-// import Crossword from "../Forms/crossword";
+import Maker from "../Crossword/Display"
 
 export default function Home() {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -15,6 +15,7 @@ export default function Home() {
 
     const [fetchCrossword, setFetchCrossword] = useState([]);
     const [crosswordsLoaded, setCrosswordLoaded] = useState(false);
+    const [showMaker, setShowMaker] = useState(false);
 
     useEffect(() => {
         function handleStorageChange() {
@@ -28,9 +29,7 @@ export default function Home() {
         };
     }, []);
 
-
     //show crosswords
-
 
     //display register form
 
@@ -43,6 +42,11 @@ export default function Home() {
 
     const displayLoginForm = () => {
         setShowLogin(!showLogin);
+        setShowRegister(false);
+    };
+
+    const displayCrosswordMaker = () => {
+        setShowMaker(!showMaker);
         setShowRegister(false);
     };
 
@@ -76,6 +80,7 @@ export default function Home() {
 
     return (
         <>
+        {showMaker ? (<Maker apiToken={apiToken}/>) : (
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
@@ -87,6 +92,7 @@ export default function Home() {
                                 <button
                                     type="button"
                                     className="btn btn-outline-success"
+                                    onClick={displayCrosswordMaker}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -129,17 +135,21 @@ export default function Home() {
                     </div>
                 </div>
             </nav>
-
-            {showRegister && !isLoggedIn && <Registration></Registration>}
-
-            {showLogin && !isLoggedIn && <Login setApiToken={setApiToken}></Login>}
-            {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
-            <Crosswords fetchCrossword={fetchCrossword}
-                        setFetchCrossword={setFetchCrossword}
-                        crosswordsLoaded={crosswordsLoaded}
-                        setCrosswordLoaded={setCrosswordLoaded}></Crosswords>
-
-
-        </>
-    );
+        )}
+    
+        {showRegister && !isLoggedIn && <Registration></Registration>}
+    
+        {showLogin && !isLoggedIn && (
+            <Login setApiToken={setApiToken}></Login>
+        )}
+    
+        {/*<Crossword setApiToken={setApiToken} ></Crossword>*/}
+        {/* <Crosswords
+            fetchCrossword={fetchCrossword}
+            setFetchCrossword={setFetchCrossword}
+            crosswordsLoaded={crosswordsLoaded}
+            setCrosswordLoaded={setCrosswordLoaded}
+        ></Crosswords> */}
+    </>
+    )
 }
