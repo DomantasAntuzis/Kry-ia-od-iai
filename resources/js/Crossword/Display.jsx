@@ -257,7 +257,7 @@ export default function Maker(props) {
             Authorization: `Bearer ${apiToken}`,
         },
         //   "X-CSRF-TOKEN": csrfToken,
-          body: JSON.stringify({data}),
+          body: JSON.stringify(data),
         })
           .then((response) => {
             console.log("Form submitted successfully");

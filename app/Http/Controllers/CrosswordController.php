@@ -34,8 +34,8 @@ class CrosswordController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(Auth::user()->id);
-        
+        // dd($request->data);
+   
         //validate crossword data
         $data = $request->validate([
             'name' => 'required|string',
@@ -44,7 +44,7 @@ class CrosswordController extends Controller
         ]);
 
 
-        $auth = Auth::user()->id;
+
 
         // check if created words don't have any symbols or numbers
         foreach ($data['usedWords'] as $word) {
@@ -57,8 +57,9 @@ class CrosswordController extends Controller
                 return response()->json($res, 201);
             }
         }
+        
         // determine crossword difficulty
-        $grid_count = count($request['grid']);
+        $grid_count = count($data['grid']);
         if($grid_count == 5){
             $diff = 1;
         } else if ($grid_count == 10) {
@@ -66,7 +67,9 @@ class CrosswordController extends Controller
         } else {
             $diff = 3;
         }
+
         // if all conditions are passed, create a new collection
+        $auth = Auth::user()->id;
         $crossword = Crossword::create([
             'name' => $data['name'],
             'user_id' => $auth,
