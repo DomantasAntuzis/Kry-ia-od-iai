@@ -34,43 +34,22 @@ class CrosswordController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(Auth::user()->id);
+        
         //validate crossword data
-//        $data = $request->validate([
-//            'name' => 'required|string',
-////            'user_id' => 'required|integer',
-////            'confirmed' => 'integer',
-//            'words' => 'required|array',
-////            'questions' => 'required|array',
-//            'difficulty' => 'required|in:1,2,3'
-//        ]);
         $data = $request->validate([
             'name' => 'required|string',
-            'words' => 'required|array',
-            'difficulty' => 'required|in:1,2,3',
+            'usedWords' => 'required|array',
+            'grid' => 'required|array',
         ]);
 
 
         $auth = Auth::user()->id;
 
-        // check if difficulty is correct and word count match by difficulty
-        $diff = $data['difficulty'];
-        $word_count = count($data['words']);
-//        $allowed_word_counts = [
-//            1 => 4,
-//            2 => 8,
-//            3 => 12
-//        ];
-//        if ($word_count !== $allowed_word_counts[$diff]) {
-//            $res = [
-//                'msg' => 'Wrong word count for the given difficulty level',
-//                'correct' => 'The correct word count for difficulty level ' . $diff . ' is ' . $allowed_word_counts[$diff]
-//            ];
-//            return response()->json($res, 201);
-//        }
-
         // check if created words don't have any symbols or numbers
-        foreach ($data['words'] as $word) {
-            if (preg_match('/[^\p{L}]/u', $word)) {
+        foreach ($data['usedWords'] as $word) {
+            $wordString = $word['word'];
+            if (preg_match('/[^\p{L}]/u', $wordString)) {
                 $res = [
                     'msg' => 'Not valid word format',
                     'correct' => 'Words cannot contain any numbers or symbols'
@@ -78,13 +57,22 @@ class CrosswordController extends Controller
                 return response()->json($res, 201);
             }
         }
-
+        // determine crossword difficulty
+        $grid_count = count($request['grid']);
+        if($grid_count == 5){
+            $diff = 1;
+        } else if ($grid_count == 10) {
+            $diff = 2;
+        } else {
+            $diff = 3;
+        }
         // if all conditions are passed, create a new collection
         $crossword = Crossword::create([
             'name' => $data['name'],
             'user_id' => $auth,
-            'words' => $data['words'],
-            'difficulty' => $data['difficulty'],
+            'words' => $data['usedWords'],
+            'grid' => $data['grid'],
+            'difficulty' => $diff,
             'confirmed' => '0',
         ]);
         $res = [

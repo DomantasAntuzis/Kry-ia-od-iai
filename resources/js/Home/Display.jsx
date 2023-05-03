@@ -21,7 +21,7 @@ export default function Home() {
             Array.from({ length: gridSize.rows }).map(() =>
                 Array.from({ length: gridSize.cols }).fill({
                     letter: null,
-                    selected: false,
+                    // selected: false,
                 })
             )
         );
@@ -32,7 +32,7 @@ export default function Home() {
             Array.from({ length: gridSize.rows }).map(() =>
                 Array.from({ length: gridSize.cols }).fill({
                     letter: null,
-                    selected: false,
+                    // selected: false,
                 })
             )
         );
@@ -245,17 +245,22 @@ export default function Home() {
         const data = { name: name, grid: grid, usedWords:usedWords };
         console.log(data)
         // url kad ir koks jis yra.
-        // fetch(url, {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(data),
-        // })
-        //   .then((response) => {
-        //     console.log("Form submitted successfully");
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error submitting form:", error);
-        //   });
+        fetch("api/store", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            // "X-CSRF-TOKEN": csrfToken,
+        },
+        //   "X-CSRF-TOKEN": csrfToken,
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            console.log("Form submitted successfully");
+          })
+          .catch((error) => {
+            console.error("Error submitting form:", error);
+          });
       };
     
 

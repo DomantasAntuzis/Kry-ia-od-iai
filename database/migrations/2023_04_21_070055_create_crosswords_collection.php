@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::connection('mongodb')->create('crosswords', function (Blueprint $collection) {
             $collection->string('id');
+            $collection->string('title');
             $collection->unsignedBigInteger('user_id');
             $collection->integer('confirmed')->default(0);
+            $collection->json('grid');
             $collection->unsignedTinyInteger('difficulty');
             $collection->json('words');
             $collection->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

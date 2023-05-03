@@ -13,7 +13,9 @@ class Crossword extends Eloquent
         'name',
         'difficulty',
         'words',
-        'confirmed'
+        'confirmed',
+        'grid',
+        'user_id',
     ];
     protected $connection = 'mongodb';
     protected $collection = 'crosswords';
