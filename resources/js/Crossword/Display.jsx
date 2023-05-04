@@ -15,6 +15,9 @@ export default function Maker(props) {
     const [words, setWords] = useState([]);
     const [usedWords, setUsedWords] = useState([]);
     const [selectedWord, setSelectedWord] = useState(null);
+
+    const [direction, setDirection] = useState("right");
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     const apiToken = props.apiToken;
 
@@ -189,15 +192,21 @@ export default function Maker(props) {
     const handleAddWord = (event) => {
         event.preventDefault();
         const input = event.target.elements.word;
-        const newWord = input.value;
-        setWords([
-            ...words,
-            {
-                word: newWord,
-                direction: "right",
-            },
-        ]);
-        input.value = "";
+        if (input.value) {
+
+            const word = {
+                word: input.value,
+                direction: direction,
+            }
+            // setWords([
+            //     ...words,
+            //     word
+            // ]);
+            
+            handleWordSelection(word);
+            
+            input.value = "";
+        }
     };
 
     const handleWordSelection = (word) => {
@@ -245,111 +254,143 @@ export default function Maker(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = { name: name, grid: grid, usedWords:usedWords };
-        console.log(data)
+        const data = { name: name, grid: grid, usedWords: usedWords };
+        console.log(data);
         // url kad ir koks jis yra.
         fetch("api/store", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "X-CSRF-TOKEN": csrfToken,
-            Authorization: `Bearer ${apiToken}`,
-        },
-        //   "X-CSRF-TOKEN": csrfToken,
-          body: JSON.stringify(data),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "X-CSRF-TOKEN": csrfToken,
+                Authorization: `Bearer ${apiToken}`,
+            },
+            //   "X-CSRF-TOKEN": csrfToken,
+            body: JSON.stringify(data),
         })
-          .then((response) => {
-            console.log("Form submitted successfully");
-          })
-          .catch((error) => {
-            console.error("Error submitting form:", error);
-          });
-      };
-    
+            .then((response) => {
+                console.log("Form submitted successfully");
+            })
+            .catch((error) => {
+                console.error("Error submitting form:", error);
+            });
+    };
 
     return (
-        <div className="crossword">
-            <div className="table-container">
-                <div id="addWord">
-                    <form onSubmit={handleAddWord} id="addWordForm">
-                        <input
-                            type="text"
-                            name="word"
-                            placeholder="Enter a word"
-                        />
-                        <button type="submit">Add</button>
-                    </form>
-                    <div>
-                        <h2>Words</h2>
-                        <ul className="wordList">
-                            {words.map((word, i) => (
-                                <li key={i}>
-                                    <input
-                                        type="text"
-                                        value={word.word}
-                                        onChange={(event) =>
-                                            handleWordChange(event, i, "word")
-                                        }
-                                        readOnly
-                                    />
-                                    <select
-                                        value={word.direction}
-                                        onChange={(event) =>
-                                            handleWordChange(
-                                                event,
-                                                i,
-                                                "direction"
-                                            )
-                                        }
-                                    >
-                                        <option value="right">Right</option>
-                                        <option value="down">Down</option>
-                                        <option value="left">Left</option>
-                                        <option value="up">Up</option>
-                                    </select>
-                                    <button
-                                        onClick={() =>
-                                            handleWordSelection(word)
-                                        }
-                                    >
-                                        Select
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+        <div className="container crossword">
+            <div className="row">
+                <div className="col">
+                    <div className="table-container">
+                        <table>
+                            <tbody>
+                                {grid.map((row, i) => (
+                                    <tr key={i}>
+                                        {row.map(({ letter, selected }, j) => (
+                                            <td
+                                                key={`${i}-${j}`}
+                                                className={
+                                                    selected ? "selected" : ""
+                                                }
+                                                data-row={i}
+                                                data-col={j}
+                                                onClick={() =>
+                                                    handleCellClick(i, j)
+                                                }
+                                            >
+                                                {letter}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <table>
-                    <tbody>
-                        {grid.map((row, i) => (
-                            <tr key={i}>
-                                {row.map(({ letter, selected }, j) => (
-                                    <td
-                                        key={`${i}-${j}`}
-                                        className={selected ? "selected" : ""}
-                                        data-row={i}
-                                        data-col={j}
-                                        onClick={() => handleCellClick(i, j)}
-                                    >
-                                        {letter}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-                {selectedWord && (
-                    <div id="selectedWord">
-                        <h2>Selected Word</h2>
-                        <h5>Choose starting square</h5>
-                        <p>Word: {selectedWord.word}</p>
-                        <p>Direction: {selectedWord.direction}</p>
-                    </div>
-                )}
             </div>
-            <div id="functionBtns">
-                <div>
+            <div className="row">
+                <div className="col col-md-4" id="addWord">
+                    <h2>Add word</h2>
+                    <form onSubmit={handleAddWord} id="addWordForm">
+                        <div className="input-group flex-nowrap">
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="word"
+                                placeholder="Enter a word"
+                            />
+                            <button type="submit" className="input-group-text">
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                            <button type="submit" className="input-group-text">
+                                <i class="bi bi-arrow-down"></i>
+                            </button>
+                            <button type="submit" className="input-group-text">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <button type="submit" className="input-group-text">
+                                <i class="bi bi-arrow-up"></i>
+                            </button>
+
+                            {/* <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="btnradio1">Radio 1</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio2">Radio 2</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio3">Radio 3</label>
+                            </div> */}
+
+                        </div>
+                    </form>
+                </div>
+                <div className="col col-md-4">
+                    <h2>Words</h2>
+                    <ul className="wordList">
+                        {usedWords.map((word, i) => (
+                            <li key={i}>
+                                <input
+                                    type="text"
+                                    value={word.word}
+                                    onChange={(event) =>
+                                        handleWordChange(event, i, "word")
+                                    }
+                                    readOnly
+                                />
+                                <select
+                                    value={word.direction}
+                                    onChange={(event) =>
+                                        handleWordChange(event, i, "direction")
+                                    }
+                                >
+                                    <option value="right">Right</option>
+                                    <option value="down">Down</option>
+                                    <option value="left">Left</option>
+                                    <option value="up">Up</option>
+                                </select>
+                                <button
+                                    onClick={() => handleWordSelection(word)}
+                                >
+                                    Select
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="col col-md-4">
+                    <h2>Selected word</h2>
+                    {selectedWord && (
+                        <div id="selectedWord">
+                            <h5>Choose starting square</h5>
+                            <p>Word: {selectedWord.word}</p>
+                            <p>Direction: {selectedWord.direction}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="row" id="functionBtns">
+                <div className="col col-md-4">
                     <h2>Grid Size</h2>
                     <button onClick={() => handleGridSizeChange(5, 10)}>
                         5x10
@@ -361,12 +402,13 @@ export default function Maker(props) {
                         15x20
                     </button>
                 </div>
-                <div>
-                    <h2>fill empty spaces</h2>
+                <div className="col col-md-4">
+                    <h2>Fill empty spaces</h2>
                     <button onClick={fillEmptySquares}>fill</button>
                     <button onClick={test}>current grid</button>
                 </div>
-                <div>
+                <div className="col col-md-4">
+                    <h2>Submit crossword</h2>
                     <form onSubmit={handleSubmit}>
                         <label>
                             Name:
